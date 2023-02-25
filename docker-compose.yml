@@ -27,7 +27,8 @@ services:
         volumes:
             - ./public:/var/www/public
             - ./docker/nginx:/var/www/docker/nginx
-            - ./docker/nginx/messenger.conf:/etc/nginx/conf.d/messenger.conf
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         networks:
             - "messenger-net"
         depends_on:

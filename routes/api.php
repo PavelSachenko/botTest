@@ -59,3 +59,7 @@ Route::any('/new-message', function (){
         \App\MyEventHandler::startAndLoop('session.madeline', new Settings());
     }, 'messageHandler');
 });
+
+Route::get("world", function (){
+   return "hello world";
+});
