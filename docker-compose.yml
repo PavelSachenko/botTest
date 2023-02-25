@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+    messenger-php:
+        build:
+            context: docker/php
+            dockerfile: dockerfile
+        container_name: messenger-php
+        restart: 'no'
+        volumes:
+            - ./:/var/www
+            - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+            - ./docker/system/supervisor-listener.conf:/etc/supervisor/conf.d/supervisor-listener.conf
+        networks:
+            - "messenger-net"
+        depends_on:
+            - "messenger-postgres"
+
+
+    messenger-nginx:
+        image: nginx:1.21.6-alpine
+        container_name: messenger-nginx
+        restart: 'no'
+        ports:
+            - "80:80"
+        volumes:
+            - ./public:/var/www/public
+            - ./docker/nginx:/var/www/docker/nginx
+            - ./docker/nginx/messenger.conf:/etc/nginx/conf.d/messenger.conf
+        networks:
+            - "messenger-net"
+        depends_on:
+            - "messenger-php"
+
+    messenger-postgres:
+        image: postgres:14-alpine
+        container_name: messenger-postgres
+        restart: 'no'
+        environment:
+            POSTGRES_DB: "lumen"
+            POSTGRES_USER: "admin"
+            POSTGRES_PASSWORD: "pass"
+        ports:
+            - "5436:5432"
+        volumes:
+            - ./docker/postgres/data:/var/lib/postgresql/data
+        networks:
+            - "messenger-net"
+
+
+networks:
+    messenger-net:
+        driver: bridge
+
