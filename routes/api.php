@@ -27,7 +27,7 @@ Route::any('/hello', function (){
     $MadelineProto = new \danog\MadelineProto\API('session.madeline');
     $MadelineProto->async(false);
     $MadelineProto->start();
-//    $me = $MadelineProto->getSelf();
+    $me = $MadelineProto->getSelf();
     dd($MadelineProto->getSelf());
 //    $MadelineProto->logger($me);
 //
@@ -45,21 +45,16 @@ Route::any('/hello', function (){
 //    $MadelineProto->echo('OK, done!');
 });
 
-Route::get('/test', function (){
+Route::get('/send-message', function (){
     $MadelineProto = new \danog\MadelineProto\API('session.madeline');
     $MadelineProto->async(false);
     $MadelineProto->start();
 
-    dd($MadelineProto->messages->sendMessage(['peer' =>'https://t.me/PavloSachenko', 'message' => 'hello']));
+    dd($MadelineProto->messages->sendMessage(['peer' =>'https://t.me/PavloSachenko', 'message' => 'hello test pasha bot']));
 });
 
 Route::any('/new-message', function (){
 
-    $id = \danog\MadelineProto\Shutdown::addCallback(static function(){
-        \App\MyEventHandler::startAndLoop('session.madeline', new Settings());
-    }, 'messageHandler');
+    \App\MyEventHandler::startAndLoop('session.madeline', new Settings());
 });
 
-Route::get("world", function (){
-   return "hello world";
-});
