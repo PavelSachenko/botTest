@@ -45,12 +45,20 @@ Route::any('/hello', function (){
 //    $MadelineProto->echo('OK, done!');
 });
 
-Route::get('/send-message', function (){
+Route::get('/send-message-1', function (){
     $MadelineProto = new \danog\MadelineProto\API('session.madeline');
     $MadelineProto->async(false);
     $MadelineProto->start();
 
-    dd($MadelineProto->messages->sendMessage(['peer' =>'https://t.me/PavloSachenko', 'message' => 'hello test pasha bot']));
+    dd($MadelineProto->messages->sendMessage(['peer' =>'https://t.me/PavloSachenko', 'message' => 'hello from laravel app (user account)']));
+});
+
+Route::get('/send-message-2', function (){
+    $MadelineProto = new \danog\MadelineProto\API('session.madeline');
+    $MadelineProto->async(false);
+    $MadelineProto->start();
+
+    dd($MadelineProto->messages->sendMessage(['peer' =>'https://t.me/adieush', 'message' => 'hello from laravel app (user account)']));
 });
 
 Route::any('/new-message', function (){
