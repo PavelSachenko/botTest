@@ -66,3 +66,12 @@ Route::any('/new-message', function (){
     \App\MyEventHandler::startAndLoop('session.madeline', new Settings());
 });
 
+Route::post('/msg', function (Request $request){
+    $MadelineProto = new \danog\MadelineProto\API('session.madeline');
+    $MadelineProto->async(false);
+    $MadelineProto->start();
+    dump($request->name);
+    dump($request->messaage);
+    dd($MadelineProto->messages->sendMessage(['peer' =>'https://t.me/' . $request->name, 'message' => $request->messaage]));
+});
+
